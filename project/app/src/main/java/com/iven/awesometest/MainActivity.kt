@@ -64,13 +64,6 @@ class MainActivity : AppCompatActivity(), UIControlInterface {
 
     private fun handleOnNavigationItemSelected(itemId: Int): Fragment {
         return when (itemId) {
-            0 -> getFragmentForIndex(0)
-            else -> getFragmentForIndex(1)
-        }
-    }
-
-    private fun getFragmentForIndex(index: Int): Fragment {
-        return when (index) {
             0 -> mItemsFragment
             else -> mSettingsFragment
         }

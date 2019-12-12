@@ -28,7 +28,7 @@ class ItemsFragment : Fragment(), SearchView.OnQueryTextListener {
     //views
     private lateinit var mItemsRecyclerView: RecyclerView
 
-    private var mItems =
+    private val mItems =
         listOf(
             "Hello!",
             "Bye bye",
@@ -74,27 +74,24 @@ class ItemsFragment : Fragment(), SearchView.OnQueryTextListener {
 
         mDataSource = dataSourceOf(mItems)
 
-        context?.let {
+        mItemsRecyclerView.apply {
 
-            mItemsRecyclerView.apply {
+            // setup{} is an extension method on RecyclerView
+            setup {
 
-                // setup{} is an extension method on RecyclerView
-                setup {
+                // item is a `val` in `this` here
+                withDataSource(mDataSource)
+                withItem<String, GenericViewHolder>(R.layout.generic_item) {
 
-                    // item is a `val` in `this` here
-                    withDataSource(mDataSource)
-                    withItem<String, GenericViewHolder>(R.layout.generic_item) {
+                    onBind(::GenericViewHolder) { _, item ->
+                        // GenericViewHolder is `this` here
+                        title.text = item
+                        subtitle.text = item
+                    }
 
-                        onBind(::GenericViewHolder) { _, item ->
-                            // GenericViewHolder is `this` here
-                            title.text = item
-                            subtitle.text = item
-                        }
-
-                        onClick {
-                            if (::mUIControlInterface.isInitialized)
-                                mUIControlInterface.onItemSelected(item)
-                        }
+                    onClick {
+                        if (::mUIControlInterface.isInitialized)
+                            mUIControlInterface.onItemSelected(item)
                     }
                 }
             }
